@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bei.mapper.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.bei.model.OrderDetail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="dish_id" jdbcType="BIGINT" property="dishId" />
+    <result column="setmeal_id" jdbcType="BIGINT" property="setmealId" />
+    <result column="dish_flavor" jdbcType="VARCHAR" property="dishFlavor" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, image, order_id, dish_id, setmeal_id, dish_flavor, number, amount
+  </sql>
+  <select id="selectByExample" parameterType="com.bei.model.OrderDetailExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from order_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from order_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bei.model.OrderDetailExample">
+    delete from order_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bei.model.OrderDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into order_detail (name, image, order_id, 
+      dish_id, setmeal_id, dish_flavor, 
+      number, amount)
+    values (#{name,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{orderId,jdbcType=BIGINT}, 
+      #{dishId,jdbcType=BIGINT}, #{setmealId,jdbcType=BIGINT}, #{dishFlavor,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bei.model.OrderDetail">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into order_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="dishId != null">
+        dish_id,
+      </if>
+      <if test="setmealId != null">
+        setmeal_id,
+      </if>
+      <if test="dishFlavor != null">
+        dish_flavor,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="dishId != null">
+        #{dishId,jdbcType=BIGINT},
+      </if>
+      <if test="setmealId != null">
+        #{setmealId,jdbcType=BIGINT},
+      </if>
+      <if test="dishFlavor != null">
+        #{dishFlavor,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bei.model.OrderDetailExample" resultType="java.lang.Long">
+    select count(*) from order_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update order_detail
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.name != null">
+        name = #{row.name,jdbcType=VARCHAR},
+      </if>
+      <if test="row.image != null">
+        image = #{row.image,jdbcType=VARCHAR},
+      </if>
+      <if test="row.orderId != null">
+        order_id = #{row.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="row.dishId != null">
+        dish_id = #{row.dishId,jdbcType=BIGINT},
+      </if>
+      <if test="row.setmealId != null">
+        setmeal_id = #{row.setmealId,jdbcType=BIGINT},
+      </if>
+      <if test="row.dishFlavor != null">
+        dish_flavor = #{row.dishFlavor,jdbcType=VARCHAR},
+      </if>
+      <if test="row.number != null">
+        number = #{row.number,jdbcType=INTEGER},
+      </if>
+      <if test="row.amount != null">
+        amount = #{row.amount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update order_detail
+    set id = #{row.id,jdbcType=BIGINT},
+      name = #{row.name,jdbcType=VARCHAR},
+      image = #{row.image,jdbcType=VARCHAR},
+      order_id = #{row.orderId,jdbcType=BIGINT},
+      dish_id = #{row.dishId,jdbcType=BIGINT},
+      setmeal_id = #{row.setmealId,jdbcType=BIGINT},
+      dish_flavor = #{row.dishFlavor,jdbcType=VARCHAR},
+      number = #{row.number,jdbcType=INTEGER},
+      amount = #{row.amount,jdbcType=DECIMAL}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bei.model.OrderDetail">
+    update order_detail
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=BIGINT},
+      </if>
+      <if test="dishId != null">
+        dish_id = #{dishId,jdbcType=BIGINT},
+      </if>
+      <if test="setmealId != null">
+        setmeal_id = #{setmealId,jdbcType=BIGINT},
+      </if>
+      <if test="dishFlavor != null">
+        dish_flavor = #{dishFlavor,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bei.model.OrderDetail">
+    update order_detail
+    set name = #{name,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=BIGINT},
+      dish_id = #{dishId,jdbcType=BIGINT},
+      setmeal_id = #{setmealId,jdbcType=BIGINT},
+      dish_flavor = #{dishFlavor,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

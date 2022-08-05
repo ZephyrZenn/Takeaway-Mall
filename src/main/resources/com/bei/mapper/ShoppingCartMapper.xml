@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bei.mapper.ShoppingCartMapper">
+  <resultMap id="BaseResultMap" type="com.bei.model.ShoppingCart">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="dish_id" jdbcType="BIGINT" property="dishId" />
+    <result column="setmeal_id" jdbcType="BIGINT" property="setmealId" />
+    <result column="dish_flavor" jdbcType="VARCHAR" property="dishFlavor" />
+    <result column="number" jdbcType="INTEGER" property="number" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, image, user_id, dish_id, setmeal_id, dish_flavor, number, amount, create_time
+  </sql>
+  <select id="selectByExample" parameterType="com.bei.model.ShoppingCartExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shopping_cart
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bei.model.ShoppingCartExample">
+    delete from shopping_cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bei.model.ShoppingCart">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shopping_cart (name, image, user_id, 
+      dish_id, setmeal_id, dish_flavor, 
+      number, amount, create_time
+      )
+    values (#{name,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{dishId,jdbcType=BIGINT}, #{setmealId,jdbcType=BIGINT}, #{dishFlavor,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.bei.model.ShoppingCart">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into shopping_cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="dishId != null">
+        dish_id,
+      </if>
+      <if test="setmealId != null">
+        setmeal_id,
+      </if>
+      <if test="dishFlavor != null">
+        dish_flavor,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="dishId != null">
+        #{dishId,jdbcType=BIGINT},
+      </if>
+      <if test="setmealId != null">
+        #{setmealId,jdbcType=BIGINT},
+      </if>
+      <if test="dishFlavor != null">
+        #{dishFlavor,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bei.model.ShoppingCartExample" resultType="java.lang.Long">
+    select count(*) from shopping_cart
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update shopping_cart
+    <set>
+      <if test="row.id != null">
+        id = #{row.id,jdbcType=BIGINT},
+      </if>
+      <if test="row.name != null">
+        name = #{row.name,jdbcType=VARCHAR},
+      </if>
+      <if test="row.image != null">
+        image = #{row.image,jdbcType=VARCHAR},
+      </if>
+      <if test="row.userId != null">
+        user_id = #{row.userId,jdbcType=BIGINT},
+      </if>
+      <if test="row.dishId != null">
+        dish_id = #{row.dishId,jdbcType=BIGINT},
+      </if>
+      <if test="row.setmealId != null">
+        setmeal_id = #{row.setmealId,jdbcType=BIGINT},
+      </if>
+      <if test="row.dishFlavor != null">
+        dish_flavor = #{row.dishFlavor,jdbcType=VARCHAR},
+      </if>
+      <if test="row.number != null">
+        number = #{row.number,jdbcType=INTEGER},
+      </if>
+      <if test="row.amount != null">
+        amount = #{row.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="row.createTime != null">
+        create_time = #{row.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shopping_cart
+    set id = #{row.id,jdbcType=BIGINT},
+      name = #{row.name,jdbcType=VARCHAR},
+      image = #{row.image,jdbcType=VARCHAR},
+      user_id = #{row.userId,jdbcType=BIGINT},
+      dish_id = #{row.dishId,jdbcType=BIGINT},
+      setmeal_id = #{row.setmealId,jdbcType=BIGINT},
+      dish_flavor = #{row.dishFlavor,jdbcType=VARCHAR},
+      number = #{row.number,jdbcType=INTEGER},
+      amount = #{row.amount,jdbcType=DECIMAL},
+      create_time = #{row.createTime,jdbcType=TIMESTAMP}
+    <if test="example != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bei.model.ShoppingCart">
+    update shopping_cart
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="dishId != null">
+        dish_id = #{dishId,jdbcType=BIGINT},
+      </if>
+      <if test="setmealId != null">
+        setmeal_id = #{setmealId,jdbcType=BIGINT},
+      </if>
+      <if test="dishFlavor != null">
+        dish_flavor = #{dishFlavor,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bei.model.ShoppingCart">
+    update shopping_cart
+    set name = #{name,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      dish_id = #{dishId,jdbcType=BIGINT},
+      setmeal_id = #{setmealId,jdbcType=BIGINT},
+      dish_flavor = #{dishFlavor,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
