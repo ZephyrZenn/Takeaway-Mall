@@ -101,7 +101,7 @@
               this.loading = true
               let res = await loginApi(this.loginForm)
               if (String(res.code) === '1') {
-                // localStorage.setItem('userInfo',JSON.stringify(res.data))
+                localStorage.setItem('userInfo',JSON.stringify(res.map['userInfo']))
                 window.localStorage.setItem("Authentication", res.data)
                 window.location.href= '../../index.html'
               } else {

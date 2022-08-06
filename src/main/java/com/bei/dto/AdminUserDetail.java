@@ -2,9 +2,12 @@ package com.bei.dto;
 
 import com.bei.model.Employee;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * spring security需要的用户类
@@ -17,9 +20,15 @@ public class AdminUserDetail implements UserDetails {
         this.employee = employee;
     }
 
+    public Long getId() {
+        return employee.getId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthority("admin"));
+        return authorityList;
     }
 
     @Override
@@ -39,7 +48,7 @@ public class AdminUserDetail implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return employee.getStatus() != 1;
+        return employee.getStatus() == 1;
     }
 
     @Override

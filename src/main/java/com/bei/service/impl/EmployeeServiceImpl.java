@@ -1,10 +1,13 @@
 package com.bei.service.impl;
 
+import com.bei.common.param.EmployeeParam;
 import com.bei.mapper.EmployeeMapper;
 import com.bei.model.Employee;
 import com.bei.model.EmployeeExample;
 import com.bei.service.EmployeeService;
 import com.bei.utils.JwtTokenUtil;
+import com.bei.utils.SnowflakeIdUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -62,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new BadCredentialsException("密码错误");
         }
         if (!userDetails.isAccountNonLocked()) {
-//            throw new
+            throw new BadCredentialsException("帐号已被封禁");
         }
         // 将登录成功的用户交给spring security
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -70,5 +75,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         // 返回生成的token
         return jwtTokenUtil.generateToken(userDetails);
+    }
+
+    @Override
+    public void addEmployee(EmployeeParam employeeParam, Long uid) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeParam, employee);
+        SnowflakeIdUtils idUtils = new SnowflakeIdUtils(uid, 1);
+        employee.setId(idUtils.nextId());
+        employee.setPassword(passwordEncoder.encode("123456"));
+        employee.setCreateTime(new Date());
+        employee.setUpdateTime(new Date());
+        employee.setCreateUser(uid);
+        employee.setUpdateUser(uid);
+        employeeMapper.insertSelective(employee);
     }
 }
