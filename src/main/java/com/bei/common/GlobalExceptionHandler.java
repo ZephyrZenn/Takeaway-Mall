@@ -1,6 +1,7 @@
 package com.bei.common;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Slf4j
@@ -24,6 +27,22 @@ public class GlobalExceptionHandler {
         String msg = formatBindException(e);
         log.warn(formatException(e, request, msg, false));
         return CommonResult.error("参数校验错误");
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public CommonResult handleSQLException(SQLException e, HttpServletRequest request) {
+        String msg = formatException(e, request, null, false);
+        log.warn(msg);
+        if (e.getMessage().contains("Duplicate entry")) {
+            return CommonResult.error("重复数据");
+        }
+        return CommonResult.error("数据库错误");
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public CommonResult handleBadCredentialsException(BadCredentialsException e, HttpServletRequest request) {
+        log.warn(formatException(e, request, null, false));
+        return CommonResult.error(e.getMessage());
     }
 
 //    /**

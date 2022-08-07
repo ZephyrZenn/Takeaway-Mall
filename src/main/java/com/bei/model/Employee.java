@@ -1,11 +1,18 @@
 package com.bei.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Employee implements Serializable {
+
+    public static final Integer ENABLE_STATUS = 1;
+    public static final Integer DISABLE_STATUS = 0;
+
     @ApiModelProperty(value = "主键")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ApiModelProperty(value = "姓名")

@@ -3,6 +3,8 @@ package com.bei.service;
 import com.bei.common.param.EmployeeParam;
 import com.bei.model.Employee;
 
+import java.util.List;
+
 public interface EmployeeService {
     /**
      * 根据用户名获取员工
@@ -22,5 +24,13 @@ public interface EmployeeService {
      * @param employeeParam 新增用户的信息
      * @param uid 创建者的id
      * */
-    void addEmployee(EmployeeParam employeeParam, Long uid);
+    int addEmployee(EmployeeParam employeeParam, Long uid);
+
+    List<Employee> getEmployeePage(int page, int pageSize, String name);
+
+    int updateEmployeeStatus(Long id, Integer status);
+
+    Employee getEmployeeById(Long id);
+
+    int updateEmployee(Long id, EmployeeParam employeeParam);
 }

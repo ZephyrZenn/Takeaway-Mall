@@ -27,7 +27,9 @@ public class AdminUserDetail implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("admin"));
+        if (employee.getUsername().equals("admin")) {
+            authorityList.add(new SimpleGrantedAuthority("admin"));
+        }
         return authorityList;
     }
 

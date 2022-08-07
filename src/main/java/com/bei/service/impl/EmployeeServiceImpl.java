@@ -1,12 +1,15 @@
 package com.bei.service.impl;
 
 import com.bei.common.param.EmployeeParam;
+import com.bei.dto.AdminUserDetail;
 import com.bei.mapper.EmployeeMapper;
 import com.bei.model.Employee;
 import com.bei.model.EmployeeExample;
 import com.bei.service.EmployeeService;
 import com.bei.utils.JwtTokenUtil;
 import com.bei.utils.SnowflakeIdUtils;
+import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
@@ -78,7 +81,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addEmployee(EmployeeParam employeeParam, Long uid) {
+    public int addEmployee(EmployeeParam employeeParam, Long uid) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeParam, employee);
         SnowflakeIdUtils idUtils = new SnowflakeIdUtils(uid, 1);
@@ -88,6 +91,44 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateTime(new Date());
         employee.setCreateUser(uid);
         employee.setUpdateUser(uid);
-        employeeMapper.insertSelective(employee);
+        return employeeMapper.insertSelective(employee);
     }
+
+    @Override
+    public List<Employee> getEmployeePage(int page, int pageSize, String name) {
+        PageHelper.startPage(page, pageSize);
+        EmployeeExample example = new EmployeeExample();
+        if (StringUtils.isNotBlank(name)) {
+            example.createCriteria().andUsernameEqualTo(name);
+        }
+        return employeeMapper.selectByExample(example);
+    }
+
+    @Override
+    public int updateEmployeeStatus(Long id, Integer status) {
+        AdminUserDetail principal = (AdminUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Employee employee = new Employee();
+        employee.setId(id);
+        employee.setStatus(status);
+        employee.setUpdateUser(principal.getId());
+        employee.setUpdateTime(new Date());
+        return employeeMapper.updateByPrimaryKeySelective(employee);
+    }
+
+    @Override
+    public Employee getEmployeeById(Long id) {
+        return employeeMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateEmployee(Long id, EmployeeParam employeeParam) {
+        Employee employee = new Employee();
+        employee.setId(id);
+        BeanUtils.copyProperties(employeeParam, employee);
+        employee.setUpdateTime(new Date());
+        AdminUserDetail principal = (AdminUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        employee.setUpdateUser(principal.getId());
+        return employeeMapper.updateByPrimaryKeySelective(employee);
+    }
+
 }
