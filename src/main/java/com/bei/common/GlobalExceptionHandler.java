@@ -34,7 +34,8 @@ public class GlobalExceptionHandler {
         String msg = formatException(e, request, null, false);
         log.warn(msg);
         if (e.getMessage().contains("Duplicate entry")) {
-            return CommonResult.error("重复数据");
+            String s = e.getMessage().split(" ")[2];
+            return CommonResult.error( s + "已存在");
         }
         return CommonResult.error("数据库错误");
     }

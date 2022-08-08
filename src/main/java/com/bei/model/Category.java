@@ -1,11 +1,17 @@
 package com.bei.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Category implements Serializable {
+    public static final Integer DISH_CATEGORY = 1;
+    public static final Integer COMBO_CATEGORY = 2;
+
     @ApiModelProperty(value = "主键")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ApiModelProperty(value = "类型   1 菜品分类 2 套餐分类")

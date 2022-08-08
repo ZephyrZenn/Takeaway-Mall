@@ -177,7 +177,7 @@
           async init () {
             await getCategoryPage({'page': this.page, 'pageSize': this.pageSize}).then(res => {
               if (String(res.code) === '1') {
-                this.tableData = res.data.records
+                this.tableData = res.data.list
                 this.counts = Number(res.data.total)
               } else {
                 this.$message.error(res.msg || '操作失败')
