@@ -1,6 +1,6 @@
 package com.bei.service.impl;
 
-import com.bei.common.param.CategoryParam;
+import com.bei.dto.param.CategoryParam;
 import com.bei.dto.AdminUserDetail;
 import com.bei.mapper.CategoryMapper;
 import com.bei.model.Category;
@@ -60,5 +60,18 @@ public class CategoryServiceImpl implements CategoryService {
         category.setUpdateUser(principal.getId());
         category.setUpdateTime(new Date());
         return categoryMapper.updateByPrimaryKeySelective(category);
+    }
+
+    @Override
+    public List<Category> getCategoryByType(Integer type) {
+        CategoryExample example = new CategoryExample();
+        example.createCriteria().andTypeEqualTo(type);
+        example.setOrderByClause("sort");
+        return categoryMapper.selectByExample(example);
+    }
+
+    @Override
+    public Category getCategoryById(Long cid) {
+        return categoryMapper.selectByPrimaryKey(cid);
     }
 }

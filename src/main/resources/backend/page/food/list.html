@@ -166,7 +166,7 @@
             }
             await getDishPage(params).then(res => {
               if (String(res.code) === '1') {
-                this.tableData = res.data.records || []
+                this.tableData = res.data.list || []
                 this.counts = res.data.total
               }
             }).catch(err => {

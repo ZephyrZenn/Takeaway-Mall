@@ -1,6 +1,6 @@
 package com.bei.service;
 
-import com.bei.common.param.CategoryParam;
+import com.bei.dto.param.CategoryParam;
 import com.bei.model.Category;
 
 import java.util.List;
@@ -32,4 +32,16 @@ public interface CategoryService {
      * @param categoryParam 分类信息，包含id，name，sort
      * */
     int updateCategory(CategoryParam categoryParam);
+
+    /**
+     * 查询指定类别的分类
+     * @param type 类别
+     * */
+    List<Category> getCategoryByType(Integer type);
+
+    /**
+     * 根据id查找分类
+     * @param cid 分类id
+     * */
+    Category getCategoryById(Long cid);
 }

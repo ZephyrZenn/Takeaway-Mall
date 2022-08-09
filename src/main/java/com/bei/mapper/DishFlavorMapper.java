@@ -27,4 +27,6 @@ public interface DishFlavorMapper {
     int updateByPrimaryKeySelective(DishFlavor row);
 
     int updateByPrimaryKey(DishFlavor row);
+
+    void insertBatch(List<DishFlavor> dishFlavorList);
 }

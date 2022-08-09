@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/springfox-swagger-ui/**"
                 )
                 .permitAll()
-                .antMatchers("/employee/login", "/employee/logout")
+                .antMatchers("/employee/login", "/employee/logout", "/common/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

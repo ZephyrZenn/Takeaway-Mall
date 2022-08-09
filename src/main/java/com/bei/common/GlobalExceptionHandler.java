@@ -43,7 +43,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public CommonResult handleBadCredentialsException(BadCredentialsException e, HttpServletRequest request) {
         log.warn(formatException(e, request, null, false));
+        return CommonResult.error("身份验证失败");
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public CommonResult handleBusinessException(BusinessException e, HttpServletRequest request) {
+        log.warn(formatException(e, request, null, false));
         return CommonResult.error(e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public CommonResult handleException(Exception e, HttpServletRequest request) {
+        log.warn(formatException(e, request, null, false));
+        return CommonResult.error("未知错误");
     }
 
 //    /**

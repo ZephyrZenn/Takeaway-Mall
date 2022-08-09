@@ -1,6 +1,6 @@
 package com.bei.service;
 
-import com.bei.common.param.EmployeeParam;
+import com.bei.dto.param.EmployeeParam;
 import com.bei.model.Employee;
 
 import java.util.List;

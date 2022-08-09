@@ -107,10 +107,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into dish_flavor (dish_id, name, value, 
+    insert into dish_flavor (id, dish_id, name, value,
       create_time, update_time, create_user, 
       update_user, is_deleted)
-    values (#{dishId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+    values (#{id}, #{dishId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=BIGINT}, 
       #{updateUser,jdbcType=BIGINT}, #{isDeleted,jdbcType=INTEGER})
   </insert>
@@ -120,6 +120,9 @@
     </selectKey>
     insert into dish_flavor
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="dishId != null">
         dish_id,
       </if>
@@ -146,6 +149,9 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id}
+      </if>
       <if test="dishId != null">
         #{dishId,jdbcType=BIGINT},
       </if>
@@ -171,6 +177,17 @@
         #{isDeleted,jdbcType=INTEGER},
       </if>
     </trim>
+  </insert>
+  <insert id="insertBatch">
+    insert into dish_flavor (id, dish_id, name, value,
+     create_time, update_time, create_user,
+     update_user, is_deleted)
+    values
+    <foreach collection="dishFlavorList" item="dishFlavor" separator=",">
+      (#{dishFlavor.id}, #{dishFlavor.dishId,jdbcType=BIGINT}, #{dishFlavor.name,jdbcType=VARCHAR}, #{dishFlavor.value,jdbcType=VARCHAR},
+      #{dishFlavor.createTime,jdbcType=TIMESTAMP}, #{dishFlavor.updateTime,jdbcType=TIMESTAMP}, #{dishFlavor.createUser,jdbcType=BIGINT},
+      #{dishFlavor.updateUser,jdbcType=BIGINT}, #{dishFlavor.isDeleted,jdbcType=INTEGER})
+    </foreach>
   </insert>
   <select id="countByExample" parameterType="com.bei.model.DishFlavorExample" resultType="java.lang.Long">
     select count(*) from dish_flavor

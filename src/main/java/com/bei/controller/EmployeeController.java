@@ -1,9 +1,9 @@
 package com.bei.controller;
 
 import com.bei.common.CommonResult;
-import com.bei.common.param.EmployeeParam;
-import com.bei.common.param.LoginParam;
-import com.bei.common.param.StatusParam;
+import com.bei.dto.param.EmployeeParam;
+import com.bei.dto.param.LoginParam;
+import com.bei.dto.param.StatusParam;
 import com.bei.dto.AdminUserDetail;
 import com.bei.model.Employee;
 import com.bei.service.EmployeeService;
@@ -14,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j

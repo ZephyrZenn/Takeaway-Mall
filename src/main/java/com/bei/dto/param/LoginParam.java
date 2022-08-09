@@ -1,7 +1,6 @@
-package com.bei.common.param;
+package com.bei.dto.param;
 
 import lombok.Data;
-import org.apache.commons.lang.StringUtils;
 
 @Data
 public class LoginParam {

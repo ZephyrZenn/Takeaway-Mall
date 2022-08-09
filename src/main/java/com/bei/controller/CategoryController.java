@@ -1,9 +1,8 @@
 package com.bei.controller;
 
 import com.bei.common.CommonResult;
-import com.bei.common.param.CategoryParam;
+import com.bei.dto.param.CategoryParam;
 import com.bei.model.Category;
-import com.bei.model.Dish;
 import com.bei.service.CategoryService;
 import com.bei.service.DishService;
 import com.bei.service.SetmealService;
@@ -74,5 +73,14 @@ public class CategoryController {
             log.debug("更新分类 " + categoryParam + " 失败");
             return CommonResult.success("更新失败");
         }
+    }
+
+    @GetMapping("/list")
+    public CommonResult listCategory(CategoryParam categoryParam) {
+        if (categoryParam.getType() == null) {
+            return CommonResult.error("type不可为空");
+        }
+        List<Category> categoryList = categoryService.getCategoryByType(categoryParam.getType());
+        return CommonResult.success(categoryList);
     }
 }

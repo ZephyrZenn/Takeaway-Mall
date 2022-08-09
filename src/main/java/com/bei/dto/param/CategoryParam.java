@@ -1,4 +1,4 @@
-package com.bei.common.param;
+package com.bei.dto.param;
 
 import lombok.Data;
 
