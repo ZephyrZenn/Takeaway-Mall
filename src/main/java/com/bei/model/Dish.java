@@ -16,6 +16,7 @@ public class Dish implements Serializable {
     private String name;
 
     @ApiModelProperty(value = "菜品分类id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long categoryId;
 
     @ApiModelProperty(value = "菜品价格")

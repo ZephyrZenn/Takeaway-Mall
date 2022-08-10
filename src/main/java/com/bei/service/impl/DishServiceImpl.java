@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -25,6 +27,7 @@ public class DishServiceImpl implements DishService {
     public List<Dish> getDishByCategory(Long id) {
         DishExample dishExample = new DishExample();
         dishExample.createCriteria().andCategoryIdEqualTo(id);
+        dishExample.setOrderByClause("sort");
         return dishMapper.selectByExample(dishExample);
     }
 
@@ -71,5 +74,13 @@ public class DishServiceImpl implements DishService {
         dish.setUpdateTime(new Date());
         dish.setUpdateUser(principal.getId());
         return dishMapper.updateByPrimaryKeySelective(dish);
+    }
+
+    @Override
+    public int deleteDishBatches(List<Long> idList) {
+
+        DishExample example = new DishExample();
+        example.createCriteria().andIdIn(idList);
+        return dishMapper.deleteByExample(example);
     }
 }

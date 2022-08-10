@@ -27,4 +27,6 @@ public interface SetmealDishMapper {
     int updateByPrimaryKeySelective(SetmealDish row);
 
     int updateByPrimaryKey(SetmealDish row);
+
+    void insertBatch(List<SetmealDish> setmealDishList);
 }

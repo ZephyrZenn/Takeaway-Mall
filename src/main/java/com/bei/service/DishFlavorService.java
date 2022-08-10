@@ -28,4 +28,10 @@ public interface DishFlavorService {
      * 根据dishId删除对应的口味信息
      * */
     void removeByDish(Long id);
+
+    /**
+     * 批量删除菜品口味记录
+     * @param idList 菜品id列表
+     * */
+    int deleteDishBatches(List<Long> idList);
 }

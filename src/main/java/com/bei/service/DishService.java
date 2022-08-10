@@ -43,4 +43,10 @@ public interface DishService {
      * @param dish dish的新信息，其中必须包含主键
      * */
     int updateDish(Dish dish);
+
+    /**
+     * 批量删除菜品
+     * */
+    int deleteDishBatches(List<Long> idList);
+
 }

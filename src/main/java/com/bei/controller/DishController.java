@@ -1,5 +1,6 @@
 package com.bei.controller;
 
+import com.bei.common.BusinessException;
 import com.bei.common.CommonResult;
 import com.bei.dto.DishDto;
 import com.bei.model.Category;
@@ -11,12 +12,14 @@ import com.bei.service.DishService;
 import com.bei.vo.DishVo;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -90,5 +93,76 @@ public class DishController {
         dishFlavorService.removeByDish(dish.getId());
         dishFlavorService.addDishFlavorBatch(dishDto.getFlavors(), dish.getId());
         return CommonResult.success(dish.getId());
+    }
+
+    @GetMapping("/list")
+    public CommonResult getDishList(Dish dish) {
+        if (dish.getCategoryId() == null) {
+            return CommonResult.error("分类参数为空");
+        }
+        List<Dish> dishList = dishService.getDishByCategory(dish.getCategoryId());
+        dishList = dishList.stream()
+                .filter(dish1 -> {
+                    return dish1.getStatus() == 1;
+                })
+                .collect(Collectors.toList());
+        return CommonResult.success(dishList);
+    }
+
+    @DeleteMapping
+    @Transactional
+    public CommonResult deleteDish(String ids) {
+        List<Long> list = convertIdsToList(ids);
+        int count = dishService.deleteDishBatches(list);
+        if (count == 0) {
+            log.debug("删除 " + ids + " 失败，数据库中缺少该记录");
+            throw new BusinessException("删除失败,该菜品未被记录");
+        }
+        count = dishFlavorService.deleteDishBatches(list);
+        if (count == 0) {
+            log.debug("删除 " + ids + " 失败，没有删除菜品口味关系表中的记录");
+            throw new BusinessException("删除菜品失败");
+        }
+        return CommonResult.success("删除菜品成功");
+    }
+
+    @PostMapping("/status/0")
+    public CommonResult disableDish(String ids) {
+        List<Long> idList = convertIdsToList(ids);
+        for (Long id : idList) {
+            Dish dish = new Dish();
+            dish.setId(id);
+            dish.setStatus(0);
+            int count = dishService.updateDish(dish);
+            if (count != 1) {
+                log.debug("停售 " + id + " 失败，数据库没有找到操作对象");
+                throw new BusinessException("停售失败，请检查参数是否正确");
+            }
+        }
+        return CommonResult.success("停售成功");
+    }
+
+    @PostMapping("/status/1")
+    public CommonResult enableDish(String ids) {
+        List<Long> idList = convertIdsToList(ids);
+        for (Long id : idList) {
+            Dish dish = new Dish();
+            dish.setId(id);
+            dish.setStatus(1);
+            int count = dishService.updateDish(dish);
+            if (count != 1) {
+                log.debug("启售 " + ids + " 失败，数据库没有找到操作对象");
+                throw new BusinessException("启售失败，请检查参数是否正确");
+            }
+        }
+        return CommonResult.success("启售成功");
+    }
+
+    private List<Long> convertIdsToList(String ids) {
+        String[] idList = ids.split(",");
+        List<Long> list = Arrays.stream(idList)
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+        return list;
     }
 }

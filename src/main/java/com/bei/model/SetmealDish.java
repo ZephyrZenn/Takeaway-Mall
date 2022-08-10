@@ -1,5 +1,7 @@
 package com.bei.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.util.Date;
 
 public class SetmealDish implements Serializable {
     @ApiModelProperty(value = "主键")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ApiModelProperty(value = "套餐id ")

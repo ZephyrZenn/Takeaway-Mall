@@ -63,4 +63,11 @@ public class DishFlavorServiceImpl implements DishFlavorService {
         example.createCriteria().andDishIdEqualTo(id);
         dishFlavorMapper.deleteByExample(example);
     }
+
+    @Override
+    public int deleteDishBatches(List<Long> idList) {
+        DishFlavorExample example = new DishFlavorExample();
+        example.createCriteria().andDishIdIn(idList);
+        return dishFlavorMapper.deleteByExample(example);
+    }
 }
