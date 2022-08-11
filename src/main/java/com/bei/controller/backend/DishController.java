@@ -1,4 +1,4 @@
-package com.bei.controller;
+package com.bei.controller.backend;
 
 import com.bei.common.BusinessException;
 import com.bei.common.CommonResult;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -101,12 +102,21 @@ public class DishController {
             return CommonResult.error("分类参数为空");
         }
         List<Dish> dishList = dishService.getDishByCategory(dish.getCategoryId());
-        dishList = dishList.stream()
+        List<DishDto> dishDtos = dishList.stream()
                 .filter(dish1 -> {
-                    return dish1.getStatus() == 1;
+                    return Objects.equals(dish1.getStatus(), dish.getStatus());
+                })
+                .map(dish1 -> {
+                    DishDto dishDto = new DishDto();
+                    BeanUtils.copyProperties(dish1, dishDto);
+                    Category category = categoryService.getCategoryById(dish1.getCategoryId());
+                    dishDto.setCategoryName(category.getName());
+                    List<DishFlavor> flavors = dishFlavorService.getFlavorByDish(dish1.getId());
+                    dishDto.setFlavors(flavors);
+                    return dishDto;
                 })
                 .collect(Collectors.toList());
-        return CommonResult.success(dishList);
+        return CommonResult.success(dishDtos);
     }
 
     @DeleteMapping

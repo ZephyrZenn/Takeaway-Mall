@@ -40,4 +40,10 @@ public interface SetmealService {
      * 根据id获取套餐
      * */
     Setmeal getSetmeal(Long id);
+
+    /**
+     * 根据传入对象的参数查找对象
+     * @param setmeal 查找参数
+     * */
+    List<Setmeal> getSetmeal(Setmeal setmeal);
 }

@@ -30,4 +30,8 @@ public class DishDto {
     private Integer status;
 
     private List<DishFlavor> flavors;
+
+    private String categoryName;
+
+    private Integer copies;
 }

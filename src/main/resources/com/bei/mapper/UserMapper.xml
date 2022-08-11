@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.bei.model.User">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="sex" jdbcType="VARCHAR" property="sex" />
     <result column="id_number" jdbcType="VARCHAR" property="idNumber" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
@@ -69,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, phone, sex, id_number, avatar, status
+    id, name, email, sex, id_number, avatar, status
   </sql>
   <select id="selectByExample" parameterType="com.bei.model.UserExample" resultMap="BaseResultMap">
     select
@@ -105,10 +105,10 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into user (name, phone, sex, 
+    insert into user (id, name, email, sex,
       id_number, avatar, status
       )
-    values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+    values (#{id}, #{name,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR},
       #{idNumber,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}
       )
   </insert>
@@ -118,11 +118,12 @@
     </selectKey>
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      id,
       <if test="name != null">
         name,
       </if>
-      <if test="phone != null">
-        phone,
+      <if test="email != null">
+        email,
       </if>
       <if test="sex != null">
         sex,
@@ -138,11 +139,12 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      #{id},
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
       </if>
       <if test="sex != null">
         #{sex,jdbcType=VARCHAR},
@@ -173,8 +175,8 @@
       <if test="row.name != null">
         name = #{row.name,jdbcType=VARCHAR},
       </if>
-      <if test="row.phone != null">
-        phone = #{row.phone,jdbcType=VARCHAR},
+      <if test="row.email != null">
+        email = #{row.email,jdbcType=VARCHAR},
       </if>
       <if test="row.sex != null">
         sex = #{row.sex,jdbcType=VARCHAR},
@@ -197,7 +199,7 @@
     update user
     set id = #{row.id,jdbcType=BIGINT},
       name = #{row.name,jdbcType=VARCHAR},
-      phone = #{row.phone,jdbcType=VARCHAR},
+      email = #{row.email,jdbcType=VARCHAR},
       sex = #{row.sex,jdbcType=VARCHAR},
       id_number = #{row.idNumber,jdbcType=VARCHAR},
       avatar = #{row.avatar,jdbcType=VARCHAR},
@@ -212,8 +214,8 @@
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="sex != null">
         sex = #{sex,jdbcType=VARCHAR},
@@ -233,7 +235,7 @@
   <update id="updateByPrimaryKey" parameterType="com.bei.model.User">
     update user
     set name = #{name,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=VARCHAR},
       id_number = #{idNumber,jdbcType=VARCHAR},
       avatar = #{avatar,jdbcType=VARCHAR},

@@ -3,7 +3,9 @@ package com.bei.config;
 import com.bei.component.JwtAuthenticationTokenFilter;
 import com.bei.dto.AdminUserDetail;
 import com.bei.model.Employee;
+import com.bei.model.User;
 import com.bei.service.EmployeeService;
+import com.bei.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
@@ -65,7 +70,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/webjars/springfox-swagger-ui/**"
                 )
                 .permitAll()
-                .antMatchers("/employee/login", "/employee/logout", "/common/**")
+                .antMatchers("/employee/login",
+                        "/employee/logout",
+                        "/common/**",
+                        "/user/login",
+                        "/user/logout",
+                        "/user/validate")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
@@ -91,10 +101,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public UserDetailsService userDetailsService() {
         return username -> {
             Employee employee = employeeService.getEmployeeByUsername(username);
-            if (username == null) {
+            User user = userService.getUserByEmail(username);
+            if (employee == null && user == null) {
                 throw new UsernameNotFoundException("该用户不存在");
             }
-            return new AdminUserDetail(employee);
+            if (employee != null) {
+                return new AdminUserDetail(employee);
+            } else {
+                return new AdminUserDetail(user);
+            }
         };
     }
 }

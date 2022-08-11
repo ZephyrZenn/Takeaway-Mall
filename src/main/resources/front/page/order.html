@@ -110,10 +110,10 @@
                     }
                     const res = await orderPagingApi(this.paging)
                     if(res.code === 1){
-                        this.orderList.push(...res.data.records)
-                        let records = res.data.records
-                        if(records && Array.isArray(records)){
-                            records.forEach(item=>{
+                        this.orderList.push(...res.data.list)
+                        let list = res.data.list
+                        if(list && Array.isArray(list)){
+                            list.forEach(item=>{
                                 let number = 0
                                 item.orderDetails.forEach(ele=>{
                                     number += ele.number

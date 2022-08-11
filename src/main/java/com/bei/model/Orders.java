@@ -36,7 +36,7 @@ public class Orders implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
-    private String phone;
+    private String email;
 
     private String address;
 
@@ -126,12 +126,12 @@ public class Orders implements Serializable {
         this.remark = remark;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddress() {
@@ -174,7 +174,7 @@ public class Orders implements Serializable {
         sb.append(", payMethod=").append(payMethod);
         sb.append(", amount=").append(amount);
         sb.append(", remark=").append(remark);
-        sb.append(", phone=").append(phone);
+        sb.append(", email=").append(email);
         sb.append(", address=").append(address);
         sb.append(", userName=").append(userName);
         sb.append(", consignee=").append(consignee);

@@ -70,4 +70,17 @@ public class SetMealServiceImpl implements SetmealService {
     public Setmeal getSetmeal(Long id) {
         return setmealMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public List<Setmeal> getSetmeal(Setmeal setmeal) {
+        SetmealExample example = new SetmealExample();
+        SetmealExample.Criteria criteria = example.createCriteria();
+        if (setmeal.getCategoryId() != null) {
+            criteria.andCategoryIdEqualTo(setmeal.getCategoryId());
+        }
+        if (setmeal.getStatus() != null) {
+            criteria.andStatusEqualTo(setmeal.getStatus());
+        }
+        return setmealMapper.selectByExample(example);
+    }
 }

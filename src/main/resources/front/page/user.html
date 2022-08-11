@@ -25,7 +25,7 @@
                 <img src="../images/headPage.png"/>
                 <div class="desc">
                     <div class="divName">林之迷 <img src="../images/women.png"/></div>
-                    <div class="divPhone">{{userPhone}}</div>
+                    <div class="divPhone">{{userEmail}}</div>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
             data(){
                 return {
                     form:{
-                        phone:'',
+                        email:'',
                         code:''
                     },
                     msgFlag:false,
@@ -106,7 +106,7 @@
             },
             computed:{},
             created(){
-                this.userPhone =sessionStorage.getItem("userPhone")
+                this.userEmail = window.localStorage.getItem("userEmail")
                 this.initData()
             },
             mounted(){},
@@ -134,7 +134,7 @@
                     }
                     const res = await orderPagingApi(params)
                     if(res.code === 1){
-                        this.order = res.data.records
+                        this.order = res.data.list
                         if(this.order && this.order[0].orderDetails){
                             let number = 0
                             this.order[0].orderDetails.forEach(item=>{

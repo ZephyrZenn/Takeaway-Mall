@@ -29,8 +29,8 @@
                     <div @click="toAddressPage">                    
                         <div class="address">{{address.detail}}</div>
                         <div class="name">
-                            <span>{{address.consignee}}{{address.sex === '1' ? '先生':'女士'}}</span>
-                            <span>{{address.phone}}</span>
+                            <span>{{address.consignee}}{{address.sex === 1 ? '先生':'女士'}}</span>
+                            <span>{{address.email}}</span>
                         </div>
                         <i class="el-icon-arrow-right"></i>
                     </div>
@@ -101,7 +101,7 @@
                 data(){
                     return {
                         address:{
-                            phone:'',//手机号
+                            email:'',//手机号
                             consignee:'',//姓名
                             detail:'',//详细地址
                             sex:'1',

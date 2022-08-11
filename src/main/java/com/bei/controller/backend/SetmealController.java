@@ -1,4 +1,4 @@
-package com.bei.controller;
+package com.bei.controller.backend;
 
 import com.bei.common.BusinessException;
 import com.bei.common.CommonResult;
@@ -135,6 +135,12 @@ public class SetmealController {
         BeanUtils.copyProperties(setmeal, setmealDto);
         setmealDto.setSetmealDishes(setmealDishList);
         return CommonResult.success(setmealDto);
+    }
+
+    @GetMapping("/list")
+    public CommonResult getSetmeal(Setmeal setmeal) {
+        List<Setmeal> setmealList = setmealService.getSetmeal(setmeal);
+        return CommonResult.success(setmealList);
     }
 
     @PutMapping

@@ -1,5 +1,7 @@
 package com.bei.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -7,6 +9,7 @@ import java.util.Date;
 
 public class ShoppingCart implements Serializable {
     @ApiModelProperty(value = "主键")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ApiModelProperty(value = "名称")
@@ -16,12 +19,15 @@ public class ShoppingCart implements Serializable {
     private String image;
 
     @ApiModelProperty(value = "主键")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     @ApiModelProperty(value = "菜品id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long dishId;
 
     @ApiModelProperty(value = "套餐id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long setmealId;
 
     @ApiModelProperty(value = "口味")

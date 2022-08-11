@@ -10,8 +10,8 @@ public class User implements Serializable {
     @ApiModelProperty(value = "姓名")
     private String name;
 
-    @ApiModelProperty(value = "手机号")
-    private String phone;
+    @ApiModelProperty(value = "mail")
+    private String email;
 
     @ApiModelProperty(value = "性别")
     private String sex;
@@ -43,12 +43,12 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getSex() {
@@ -91,7 +91,7 @@ public class User implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
-        sb.append(", phone=").append(phone);
+        sb.append(", email=").append(email);
         sb.append(", sex=").append(sex);
         sb.append(", idNumber=").append(idNumber);
         sb.append(", avatar=").append(avatar);

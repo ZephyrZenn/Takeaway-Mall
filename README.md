@@ -20,7 +20,7 @@ title: 后台
 3. C端用户：可以浏览菜品，添加购物车，设置地址等。
 
 ## 技术选型
-![](https://raw.githubusercontent.com/FaustProMaxPX/pic_repository/main/project/2022-08-05%2015-12-20%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png)
+![](https://raw.githubusercontent.com/FaustProMaxPX/pic_repository/main/project/2022-08-05%2016-25-26%20%E7%9A%84%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE.png)
 
 ## 进度
 - 项目骨架搭建
@@ -41,3 +41,6 @@ title: 后台
   - (批量)删除菜品
   - (批量)更新菜品状态
 - 套餐管理
+- 用户登录
+- 购物车
+- 订单管理

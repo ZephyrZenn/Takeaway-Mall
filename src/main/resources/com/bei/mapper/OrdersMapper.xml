@@ -12,7 +12,7 @@
     <result column="pay_method" jdbcType="INTEGER" property="payMethod" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="consignee" jdbcType="VARCHAR" property="consignee" />
@@ -77,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, number, status, user_id, address_book_id, order_time, checkout_time, pay_method, 
-    amount, remark, phone, address, user_name, consignee
+    amount, remark, email, address, user_name, consignee
   </sql>
   <select id="selectByExample" parameterType="com.bei.model.OrdersExample" resultMap="BaseResultMap">
     select
@@ -116,12 +116,12 @@
     insert into orders (number, status, user_id, 
       address_book_id, order_time, checkout_time, 
       pay_method, amount, remark, 
-      phone, address, user_name, 
+      email, address, user_name, 
       consignee)
     values (#{number,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, 
       #{addressBookId,jdbcType=BIGINT}, #{orderTime,jdbcType=TIMESTAMP}, #{checkoutTime,jdbcType=TIMESTAMP}, 
       #{payMethod,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
       #{consignee,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bei.model.Orders">
@@ -157,8 +157,8 @@
       <if test="remark != null">
         remark,
       </if>
-      <if test="phone != null">
-        phone,
+      <if test="email != null">
+        email,
       </if>
       <if test="address != null">
         address,
@@ -198,8 +198,8 @@
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
@@ -251,8 +251,8 @@
       <if test="row.remark != null">
         remark = #{row.remark,jdbcType=VARCHAR},
       </if>
-      <if test="row.phone != null">
-        phone = #{row.phone,jdbcType=VARCHAR},
+      <if test="row.email != null">
+        email = #{row.email,jdbcType=VARCHAR},
       </if>
       <if test="row.address != null">
         address = #{row.address,jdbcType=VARCHAR},
@@ -280,7 +280,7 @@
       pay_method = #{row.payMethod,jdbcType=INTEGER},
       amount = #{row.amount,jdbcType=DECIMAL},
       remark = #{row.remark,jdbcType=VARCHAR},
-      phone = #{row.phone,jdbcType=VARCHAR},
+      email = #{row.email,jdbcType=VARCHAR},
       address = #{row.address,jdbcType=VARCHAR},
       user_name = #{row.userName,jdbcType=VARCHAR},
       consignee = #{row.consignee,jdbcType=VARCHAR}
@@ -318,8 +318,8 @@
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
@@ -344,7 +344,7 @@
       pay_method = #{payMethod,jdbcType=INTEGER},
       amount = #{amount,jdbcType=DECIMAL},
       remark = #{remark,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
       address = #{address,jdbcType=VARCHAR},
       user_name = #{userName,jdbcType=VARCHAR},
       consignee = #{consignee,jdbcType=VARCHAR}

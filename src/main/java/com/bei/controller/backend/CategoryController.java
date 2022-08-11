@@ -1,4 +1,4 @@
-package com.bei.controller;
+package com.bei.controller.backend;
 
 import com.bei.common.CommonResult;
 import com.bei.dto.param.CategoryParam;
@@ -78,7 +78,10 @@ public class CategoryController {
     @GetMapping("/list")
     public CommonResult listCategory(CategoryParam categoryParam) {
         if (categoryParam.getType() == null) {
-            return CommonResult.error("type不可为空");
+            List<Category> list1 = categoryService.getCategoryByType(Category.DISH_CATEGORY);
+            List<Category> list2 = categoryService.getCategoryByType(Category.COMBO_CATEGORY);
+            list1.addAll(list2);
+            return CommonResult.success(list1);
         }
         List<Category> categoryList = categoryService.getCategoryByType(categoryParam.getType());
         return CommonResult.success(categoryList);

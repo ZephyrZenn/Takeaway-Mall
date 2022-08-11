@@ -1,6 +1,7 @@
 package com.bei.dto;
 
 import com.bei.model.Employee;
+import com.bei.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,18 +17,30 @@ public class AdminUserDetail implements UserDetails {
 
     private Employee employee;
 
+    private User user;
+
     public AdminUserDetail(Employee employee) {
         this.employee = employee;
     }
 
+    public AdminUserDetail(User user) {
+        this.user = user;
+    }
+
     public Long getId() {
-        return employee.getId();
+        if (employee != null) {
+            return employee.getId();
+        }
+        if (user != null) {
+            return user.getId();
+        }
+        return null;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        if (employee.getUsername().equals("admin")) {
+        if (employee != null && employee.getUsername().equals("admin")) {
             authorityList.add(new SimpleGrantedAuthority("admin"));
         }
         return authorityList;
@@ -35,12 +48,21 @@ public class AdminUserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return employee.getPassword();
+        if (employee != null) {
+            return employee.getPassword();
+        }
+        return "";
     }
 
     @Override
     public String getUsername() {
-        return employee.getUsername();
+        if (employee != null) {
+            return employee.getUsername();
+        }
+        if (user != null) {
+            return user.getEmail();
+        }
+        return null;
     }
 
     @Override
@@ -50,7 +72,10 @@ public class AdminUserDetail implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return employee.getStatus() == 1;
+        if (employee != null)
+            return employee.getStatus() == 1;
+        else
+            return user.getStatus() == 1;
     }
 
     @Override
@@ -60,6 +85,9 @@ public class AdminUserDetail implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return employee.getStatus() == 1;
+        if (employee != null) {
+            return employee.getStatus() == 1;
+        }
+        return user.getStatus() == 1;
     }
 }

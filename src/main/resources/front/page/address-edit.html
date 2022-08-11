@@ -28,18 +28,18 @@
                 <div class="divItem">
                    <span>联系人：</span> 
                    <el-input placeholder=" 请填写收货人的姓名" v-model="form.consignee"  maxlength='10' class="inputUser"/></el-input>
-                   <span class="spanChecked" @click="form.sex = '1'">
-                    <i :class="{iActive:form.sex === '1'}"></i>
+                   <span class="spanChecked" @click="form.sex = 1">
+                    <i :class="{iActive:form.sex === 1}"></i>
                     先生
                    </span>
-                   <span class="spanChecked" @click="form.sex = '0'">
-                    <i :class="{iActive:form.sex === '0'}"></i>
+                   <span class="spanChecked" @click="form.sex = 0">
+                    <i :class="{iActive:form.sex === 0}"></i>
                     女士
                 </span>
                 </div>
                 <div class="divItem">
-                    <span>手机号：</span> 
-                    <el-input placeholder=" 请填写收货人手机号码" v-model="form.phone"  maxlength='20' style="width: calc(100% - 80rem);"/></el-input>
+                    <span>邮箱地址：</span>
+                    <el-input placeholder=" 请填写收货人邮箱" v-model="form.email"  maxlength='20' style="width: calc(100% - 80rem);"/></el-input>
                 </div>
                 <div class="divItem">
                     <span>收货地址：</span> 
@@ -72,7 +72,7 @@
                         title:'新增收货地址',
                         form:{
                             consignee:'',//联系人
-                            phone:undefined,//手机号
+                            email:undefined,//手机号
                             sex:'1',//0表示女 1 表示男
                             detail:'',//收货地址
                             label:'公司',//标签
@@ -113,17 +113,17 @@
                             this.$notify({ type:'warning', message:'请输入联系人'});
                             return 
                         }
-                        if(!form.phone){
-                            this.$notify({ type:'warning', message:'请输入手机号'});
+                        if(!form.email){
+                            this.$notify({ type:'warning', message:'请输入邮箱'});
                             return 
                         }
                         if(!form.detail){
                             this.$notify({ type:'warning', message:'请输入收货地址'});
                             return 
                         }
-                        const reg = /^1[3|4|5|7|8][0-9]{9}$/
-                        if(!reg.test(form.phone)){
-                            this.$notify({ type:'warning', message:'手机号码不合法'});
+                        const reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+                        if(!reg.test(form.email)){
+                            this.$notify({ type:'warning', message:'邮箱不合法'});
                             return  
                         }
                         let res= {}

@@ -4,7 +4,15 @@ function loginApi(data) {
       'method': 'post',
       data
     })
-  }
+}
+
+function sendValidationCode(params) {
+    return $axios({
+        'url': '/user/validate',
+        'method': 'get',
+        params
+    })
+}
 
 function loginoutApi() {
   return $axios({

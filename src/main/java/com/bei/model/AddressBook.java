@@ -1,14 +1,18 @@
 package com.bei.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class AddressBook implements Serializable {
     @ApiModelProperty(value = "主键")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @ApiModelProperty(value = "用户id")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
 
     @ApiModelProperty(value = "收货人")
@@ -17,8 +21,8 @@ public class AddressBook implements Serializable {
     @ApiModelProperty(value = "性别 0 女 1 男")
     private Byte sex;
 
-    @ApiModelProperty(value = "手机号")
-    private String phone;
+    @ApiModelProperty(value = "邮箱")
+    private String email;
 
     @ApiModelProperty(value = "省级区划编号")
     private String provinceCode;
@@ -96,12 +100,12 @@ public class AddressBook implements Serializable {
         this.sex = sex;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getProvinceCode() {
@@ -226,7 +230,7 @@ public class AddressBook implements Serializable {
         sb.append(", userId=").append(userId);
         sb.append(", consignee=").append(consignee);
         sb.append(", sex=").append(sex);
-        sb.append(", phone=").append(phone);
+        sb.append(", email=").append(email);
         sb.append(", provinceCode=").append(provinceCode);
         sb.append(", provinceName=").append(provinceName);
         sb.append(", cityCode=").append(cityCode);
