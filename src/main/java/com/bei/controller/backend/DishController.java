@@ -1,18 +1,22 @@
 package com.bei.controller.backend;
 
+import com.bei.annotation.Cache;
+import com.bei.annotation.CleanCache;
 import com.bei.common.BusinessException;
 import com.bei.common.CommonResult;
 import com.bei.dto.DishDto;
+import com.bei.dto.param.PageParam;
 import com.bei.model.Category;
 import com.bei.model.Dish;
 import com.bei.model.DishFlavor;
+import com.bei.model.SetmealDish;
 import com.bei.service.CategoryService;
 import com.bei.service.DishFlavorService;
 import com.bei.service.DishService;
+import com.bei.service.SetmealDishService;
 import com.bei.vo.DishVo;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +42,12 @@ public class DishController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private SetmealDishService setmealDishService;
+
     @PostMapping("")
     @Transactional
+    @CleanCache(name = "dish")
     public CommonResult addDish(@RequestBody DishDto dishParam) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishParam, dish);
@@ -49,8 +57,9 @@ public class DishController {
     }
 
     @GetMapping("/page")
-    public CommonResult getDishPage(int page, int pageSize, String name) {
-        List<Dish> dishList = dishService.getDishPage(page, pageSize, name);
+    @Cache(name = "dishPage")
+    public CommonResult getDishPage(PageParam pageParam) {
+        List<Dish> dishList = dishService.getDishPage(pageParam.getPage(), pageParam.getPageSize(), pageParam.getName());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd");
         PageInfo pageInfo = new PageInfo(dishList);
         List list = (List) pageInfo.getList().stream()
@@ -83,6 +92,7 @@ public class DishController {
 
     @PutMapping
     @Transactional
+    @CleanCache(name = "dish")
     public CommonResult updateDish(@RequestBody DishDto dishDto) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDto, dish);
@@ -97,6 +107,7 @@ public class DishController {
     }
 
     @GetMapping("/list")
+    @Cache(name = "dishList")
     public CommonResult getDishList(Dish dish) {
         if (dish.getCategoryId() == null) {
             return CommonResult.error("分类参数为空");
@@ -121,6 +132,7 @@ public class DishController {
 
     @DeleteMapping
     @Transactional
+    @CleanCache(name = "dish")
     public CommonResult deleteDish(String ids) {
         List<Long> list = convertIdsToList(ids);
         int count = dishService.deleteDishBatches(list);
@@ -133,10 +145,17 @@ public class DishController {
             log.debug("删除 " + ids + " 失败，没有删除菜品口味关系表中的记录");
             throw new BusinessException("删除菜品失败");
         }
+        for (Long id : list) {
+            SetmealDish setmealDish = new SetmealDish();
+            setmealDish.setDishId(String.valueOf(id));
+            setmealDish.setIsDeleted(1);
+            setmealDishService.updateSetmeal(setmealDish);
+        }
         return CommonResult.success("删除菜品成功");
     }
 
     @PostMapping("/status/0")
+    @CleanCache(name = "dish")
     public CommonResult disableDish(String ids) {
         List<Long> idList = convertIdsToList(ids);
         for (Long id : idList) {
@@ -148,11 +167,16 @@ public class DishController {
                 log.debug("停售 " + id + " 失败，数据库没有找到操作对象");
                 throw new BusinessException("停售失败，请检查参数是否正确");
             }
+            SetmealDish setmealDish = new SetmealDish();
+            setmealDish.setDishId(String.valueOf(id));
+            setmealDish.setIsDeleted(1);
+            setmealDishService.updateSetmeal(setmealDish);
         }
         return CommonResult.success("停售成功");
     }
 
     @PostMapping("/status/1")
+    @CleanCache(name = "dish")
     public CommonResult enableDish(String ids) {
         List<Long> idList = convertIdsToList(ids);
         for (Long id : idList) {
@@ -164,6 +188,10 @@ public class DishController {
                 log.debug("启售 " + ids + " 失败，数据库没有找到操作对象");
                 throw new BusinessException("启售失败，请检查参数是否正确");
             }
+            SetmealDish setmealDish = new SetmealDish();
+            setmealDish.setDishId(String.valueOf(id));
+            setmealDish.setIsDeleted(0);
+            setmealDishService.updateSetmeal(setmealDish);
         }
         return CommonResult.success("启售成功");
     }

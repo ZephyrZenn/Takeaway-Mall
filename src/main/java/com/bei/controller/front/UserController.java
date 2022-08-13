@@ -37,7 +37,7 @@ public class UserController {
             builder.append(random.nextInt(10));
         }
         redisTemplate.opsForValue().set("validation" + email, builder.toString(), 600, TimeUnit.SECONDS);
-//        mailService.sendSimpleTextMail(builder.toString(), "外卖系统登录验证码", email);
+        mailService.sendSimpleTextMail(builder.toString(), "外卖系统登录验证码", email);
         log.info("验证码为:" + builder);
         return CommonResult.success("验证码发送成功");
     }

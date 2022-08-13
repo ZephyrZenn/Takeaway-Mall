@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        redisTemplate.delete("validation" + email);
         return jwtTokenUtil.generateToken(userDetails);
     }
 

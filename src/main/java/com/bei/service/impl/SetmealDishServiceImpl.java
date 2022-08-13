@@ -52,4 +52,17 @@ public class SetmealDishServiceImpl implements SetmealDishService {
         example.createCriteria().andSetmealIdEqualTo(String.valueOf(id));
         return setmealDishMapper.selectByExample(example);
     }
+
+    @Override
+    public void updateSetmeal(SetmealDish setmealDish) {
+        SetmealDishExample example = new SetmealDishExample();
+        SetmealDishExample.Criteria criteria = example.createCriteria();
+        if (setmealDish.getDishId() != null) {
+            criteria.andDishIdEqualTo(setmealDish.getDishId());
+        }
+        if (setmealDish.getSetmealId() != null) {
+            criteria.andSetmealIdEqualTo(setmealDish.getSetmealId());
+        }
+        setmealDishMapper.updateByExampleSelective(setmealDish, example);
+    }
 }

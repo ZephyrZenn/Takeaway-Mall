@@ -1,7 +1,10 @@
 package com.bei.controller.backend;
 
+import com.bei.annotation.Cache;
+import com.bei.annotation.CleanCache;
 import com.bei.common.CommonResult;
 import com.bei.dto.param.CategoryParam;
+import com.bei.dto.param.PageParam;
 import com.bei.model.Category;
 import com.bei.service.CategoryService;
 import com.bei.service.DishService;
@@ -28,6 +31,7 @@ public class CategoryController {
     private SetmealService setmealService;
 
     @PostMapping
+    @CleanCache(name = "category")
     public CommonResult addCategory(@RequestBody CategoryParam categoryParam) {
         int count = categoryService.addCategory(categoryParam.getName(), categoryParam.getType(), categoryParam.getSort());
         if (count == 1) {
@@ -39,13 +43,15 @@ public class CategoryController {
     }
 
     @GetMapping("/page")
-    public CommonResult getCategoryPage(int page, int pageSize) {
-        List<Category> categoryList = categoryService.getCategoryPage(page, pageSize);
+    @Cache(name = "categoryPage")
+    public CommonResult getCategoryPage(PageParam pageParam) {
+        List<Category> categoryList = categoryService.getCategoryPage(pageParam.getPage(), pageParam.getPageSize());
         PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
         return CommonResult.success(pageInfo);
     }
 
     @DeleteMapping()
+    @CleanCache(name = "category")
     public CommonResult deleteCategory(Long id) {
         long dishCount = dishService.getCountByCategory(id);
         long setmealCount = setmealService.getCountByCategory(id);
@@ -64,6 +70,7 @@ public class CategoryController {
     }
 
     @PutMapping("")
+    @CleanCache(name = "category")
     public CommonResult updateCategory(@RequestBody CategoryParam categoryParam) {
         int count = categoryService.updateCategory(categoryParam);
         if (count == 1) {
@@ -76,6 +83,7 @@ public class CategoryController {
     }
 
     @GetMapping("/list")
+    @Cache(name = "categoryList")
     public CommonResult listCategory(CategoryParam categoryParam) {
         if (categoryParam.getType() == null) {
             List<Category> list1 = categoryService.getCategoryByType(Category.DISH_CATEGORY);

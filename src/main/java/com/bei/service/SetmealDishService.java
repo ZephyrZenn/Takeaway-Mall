@@ -19,4 +19,11 @@ public interface SetmealDishService {
      * 根据套餐id查询口味信息
      * */
     List<SetmealDish> getSetmeal(Long id);
+
+    /**
+     * 更新菜品套餐中指定菜品对应的条目
+     * @param setmealDish 新的菜品套餐关系信息
+     * */
+    void updateSetmeal(SetmealDish setmealDish);
+
 }

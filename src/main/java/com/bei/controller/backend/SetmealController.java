@@ -1,5 +1,7 @@
 package com.bei.controller.backend;
 
+import com.bei.annotation.Cache;
+import com.bei.annotation.CleanCache;
 import com.bei.common.BusinessException;
 import com.bei.common.CommonResult;
 import com.bei.dto.SetmealDto;
@@ -37,6 +39,7 @@ public class SetmealController {
 
     @PostMapping
     @Transactional
+    @CleanCache(name = "setmeal")
     public CommonResult addSetmeal(@RequestBody SetmealDto setmealDto) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDto, setmeal);
@@ -53,6 +56,7 @@ public class SetmealController {
     }
 
     @GetMapping("/page")
+    @Cache(name = "setmealPage")
     public CommonResult getSetmealPage(PageParam pageParam) {
         List<Setmeal> setmealList = setmealService.getSetmealPage(pageParam);
         PageInfo pageInfo = new PageInfo(setmealList);
@@ -73,6 +77,7 @@ public class SetmealController {
 
     @DeleteMapping
     @Transactional
+    @CleanCache(name = "setmeal")
     public CommonResult deleteSetmeal(@RequestParam(name = "ids") String ids) {
         List<Long> idList = convertIdsToList(ids);
         for (Long id : idList) {
@@ -92,6 +97,7 @@ public class SetmealController {
     }
 
     @PostMapping("/status/0")
+    @CleanCache(name = "setmeal")
     public CommonResult disableSetmeal(String ids) {
         List<Long> idList = convertIdsToList(ids);
         for (Long id : idList) {
@@ -103,11 +109,16 @@ public class SetmealController {
                 log.debug("停售 " + id + " 失败，数据库没有找到操作对象");
                 throw new BusinessException("停售失败，请检查参数是否正确");
             }
+            SetmealDish setmealDish = new SetmealDish();
+            setmealDish.setSetmealId(String.valueOf(id));
+            setmealDish.setIsDeleted(1);
+            setmealDishService.updateSetmeal(setmealDish);
         }
         return CommonResult.success("停售成功");
     }
 
     @PostMapping("/status/1")
+    @CleanCache(name = "setmeal")
     public CommonResult enableSetmeal(String ids) {
         List<Long> idList = convertIdsToList(ids);
         for (Long id : idList) {
@@ -138,6 +149,7 @@ public class SetmealController {
     }
 
     @GetMapping("/list")
+    @Cache(name = "setmealList")
     public CommonResult getSetmeal(Setmeal setmeal) {
         List<Setmeal> setmealList = setmealService.getSetmeal(setmeal);
         return CommonResult.success(setmealList);
@@ -145,6 +157,7 @@ public class SetmealController {
 
     @PutMapping
     @Transactional
+    @CleanCache(name = "setmeal")
     public CommonResult updateSetmeal(@RequestBody SetmealDto setmealDto) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDto, setmeal);
