@@ -78,7 +78,6 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public int deleteDishBatches(List<Long> idList) {
-
         DishExample example = new DishExample();
         example.createCriteria().andIdIn(idList);
         return dishMapper.deleteByExample(example);

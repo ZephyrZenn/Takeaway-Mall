@@ -41,8 +41,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public int updateShoppingCart(ShoppingCart shoppingCart) {
-        return shoppingCartMapper.updateByPrimaryKeySelective(shoppingCart);
+        if (shoppingCart.getId() != null)
+            return shoppingCartMapper.updateByPrimaryKeySelective(shoppingCart);
+        ShoppingCartExample example = new ShoppingCartExample();
+        ShoppingCartExample.Criteria criteria = example.createCriteria();
+        if (shoppingCart.getSetmealId() != null) {
+            criteria.andSetmealIdEqualTo(shoppingCart.getSetmealId());
+        }
+        if (shoppingCart.getDishId() != null) {
+            criteria.andDishIdEqualTo(shoppingCart.getDishId());
+        }
+        if (shoppingCart.getUserId() != null) {
+            criteria.andUserIdEqualTo(shoppingCart.getUserId());
+        }
+        return shoppingCartMapper.updateByExampleSelective(shoppingCart, example);
     }
+
+
 
     @Override
     public int deleteItemByUser(Long id) {

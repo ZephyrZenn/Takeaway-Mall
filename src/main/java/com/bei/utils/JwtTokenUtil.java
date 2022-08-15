@@ -1,6 +1,7 @@
 package com.bei.utils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
@@ -38,6 +39,8 @@ public class JwtTokenUtil {
                     .setSigningKey(secret)
                     .parseClaimsJws(token)
                     .getBody();
+        } catch (ExpiredJwtException e) {
+          return e.getClaims();
         } catch (Exception e) {
             LOGGER.info("JWT格式验证失败：{}", token);
         }

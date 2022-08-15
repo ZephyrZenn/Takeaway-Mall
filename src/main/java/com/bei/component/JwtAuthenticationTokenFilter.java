@@ -43,6 +43,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String tokenWithHead = request.getHeader(header);
         if (StringUtils.isNotBlank(tokenWithHead) && tokenWithHead.startsWith(head)) {
             String token = tokenWithHead.substring(head.length());
+            // 刷新token
+            if (jwtTokenUtil.canRefresh(token)) {
+                jwtTokenUtil.refreshToken(token);
+            }
             String username = jwtTokenUtil.getUserNameFromToken(token);
             log.info("start authentication");
             log.info("URI:{}", request.getRequestURI());

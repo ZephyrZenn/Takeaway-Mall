@@ -135,6 +135,12 @@ public class DishController {
     @CleanCache(name = "dish")
     public CommonResult deleteDish(String ids) {
         List<Long> list = convertIdsToList(ids);
+        for (Long id : list) {
+            Dish dish = dishService.getDishById(id);
+            if (dish.getStatus() == 1) {
+                throw new BusinessException("选中的部分菜品正在售卖中");
+            }
+        }
         int count = dishService.deleteDishBatches(list);
         if (count == 0) {
             log.debug("删除 " + ids + " 失败，数据库中缺少该记录");
